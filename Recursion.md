@@ -137,7 +137,7 @@ void printAllBinary(int digits){
 }
 ```
 
-##### Backtracting
+##### Backtracking
 
 Finding solution(s) by trying partial solutions and then anandoning them if they are not suitable.
 
@@ -181,5 +181,122 @@ void diceSum(int dice, int desiredSum){
   diceSumHelper(dice, desiredSum, v);
 }
 ```
+##### Key tasks:
 
-Reference: https://www.youtube.com/playlist?list=PLfmlprXA8kc9AAAC3hcg-35MAvVxT2F3
+- Figure out appropriate smallest unit of work (decision)
+
+- Figure out how to emumerate all possible choices/options for it.
+
+  
+
+```c++
+//Based on the class of Maze
+bool escapeMaze(Maze& maze, int row, int col){
+  if(!maze.isBounds(row, col){
+    //base case
+    return true;
+  } else if (maze.isWall(row, col)){
+    return false;
+  } else if (maze.isOpen(row, col)){
+    //choose	
+    maze.mark(row, col);
+    //explore
+    bool result = escape(maze, row - 1, col)
+    				 || escape(maze, row + 1, col)
+       				 || escape(maze, row, col - 1)
+        			 || escape(maze, row, col + 1);
+    //un-choose
+    if(!result){
+      maze.taint(row, col);
+    }
+    return result;
+  } else {
+    	return false;
+  }
+}
+```
+
+```c++
+void permuteHelper(vector<string>& v, vector<string>& chosen, set<vector<string>>& printed){
+  if (!v.empty()){
+    //base case
+    if(!printed.contain(chosen)){
+    	for (auto i : chosen) cout << chosen <<' ';
+      printed.add(chosen);
+    }
+  } else {
+      for (int i = 0; i < v. size(); i++){
+      //choose
+      string s = v[i];
+      chosen.push_back(s);
+      v.erase(s.begin() + i);
+      //explore
+      permuteHelper(v, chosen);
+      //unchoose
+      chosen.pop_back();
+      v.insert(i, s);
+    }
+  }
+}
+
+void permute(vector<string> &v){
+  vector<string> chosen;
+  set<vector<string>> printed; //to ensure that the printed set is not printed yet
+  permuteHelper(v, chosen, printed);
+}
+```
+
+##### "Arm's length" recursion:
+
+- unnecessary trys could be avoided by concluding them into the base case
+- avoid extra calls of the recursion function
+
+```c++
+void sublistsHelper(vector<string>& v, vector<string>& chosen){
+  if(v.isEmpty()){
+    for (auto i : chosen) cout << chosen <<' ';
+  } else {
+    string s = v[0];
+    v.erase(v.begin());
+    chosen.push_back(s);
+    //choose and explore (without s)
+    sublistsHelper(v, chosen);
+    //choose and explore (with s)
+    chosen.push_back(s);
+    sublistsHelper(v, chosen);
+    //unchoose
+    v.insert(v.begin(),s);
+    chosen.pop_back();
+  }
+}
+
+void sublists(vector<string>& v){
+	vector<string> chosen;
+  sublistsHelper(v, chosen);
+}
+```
+
+```c++
+//include Board Class
+void solveQueenHelper(Board& board, int col){
+  if(col >= board.size()){
+    cout << board << endl;
+  } else {
+      for (int row = 0; row < board.size(); row++){
+      if (board.isSafe(row, col)){
+        //choose
+        board.place(row, col);
+      	//explore
+      	solveQueenHelper(board, col + 1);
+      	//unchoose
+      	board.remove(row, col);
+    }
+  }
+}
+void solveQueens(Board& board){
+  solveQueenHelper(board, 0);
+}
+```
+
+
+Reference: https://www.youtube.com/playlist?list=PLfmlprXA8kc9AAAC3hcg-35MAvVxT2F3 (Lecture 6 - 11)
