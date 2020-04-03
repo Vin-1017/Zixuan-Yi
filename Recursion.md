@@ -78,9 +78,9 @@ void cantorSet(GWindow& window, int x, int y, int length, int levels){
     //base case - do nothing
   } else{
       //recusive case
-      window.drawLine(x, y, x + length, y); // the place wnere put this line effects the sequence of drawing
-			cantorSet(window, x, y + 20, length/3, levels - 1);
-    	cantorSet(window, x + 2*length/3, y + 20,length/3, levels - 1);
+      window.drawLine(x, y, x + length, y); // the place where put this line effects the sequence of drawing
+      cantorSet(window, x, y + 20, length/3, levels - 1);
+      cantorSet(window, x + 2*length/3, y + 20,length/3, levels - 1);
   }
 }
 ```
@@ -202,9 +202,9 @@ bool escapeMaze(Maze& maze, int row, int col){
     maze.mark(row, col);
     //explore
     bool result = escape(maze, row - 1, col)
-    				 || escape(maze, row + 1, col)
-       				 || escape(maze, row, col - 1)
-        			 || escape(maze, row, col + 1);
+    	       || escape(maze, row + 1, col)
+       	       || escape(maze, row, col - 1)
+               || escape(maze, row, col + 1);
     //un-choose
     if(!result){
       maze.taint(row, col);
